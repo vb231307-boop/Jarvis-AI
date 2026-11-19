@@ -100,9 +100,25 @@ class MainActivity : Activity(), TextToSpeech.OnInitListener {
                 reply(command)
             }
 
-            override fun onError(error: Int) {
-                status.text = "Please try again"
-            }
+            
+override fun onError(error: Int) {
+    val message = when (error) {
+        SpeechRecognizer.ERROR_AUDIO -> "Microphone audio error"
+        SpeechRecognizer.ERROR_CLIENT -> "Voice service client error"
+        SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Microphone permission missing"
+        SpeechRecognizer.ERROR_NETWORK -> "Internet connection error"
+        SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Internet timeout"
+        SpeechRecognizer.ERROR_NO_MATCH -> "No speech detected"
+        SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "Voice service busy"
+        SpeechRecognizer.ERROR_SERVER -> "Google speech server error"
+        SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "Speak again"
+        else -> "Voice error: $error"
+    }
+
+    status.text = message
+    result.text = message
+}
+
 
             override fun onBeginningOfSpeech() {}
             override fun onRmsChanged(rmsdB: Float) {}
