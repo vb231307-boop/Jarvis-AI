@@ -235,7 +235,35 @@ class MainActivity : Activity(),
     private fun reply(command: String) {
 
         val text = command.lowercase(Locale.ROOT)
+        val appPackage = when {
+            text.contains("youtube") || text.contains("यूट्यूब") ->
+                "com.google.android.youtube"
+            text.contains("whatsapp") || text.contains("व्हाट्सएप") ->
+                "com.whatsapp"
+            text.contains("chrome") || text.contains("क्रोम") ->
+                "com.android.chrome"
+            else -> null
+        }
 
+        if (appPackage != null) {
+            val launchIntent = packageManager.getLaunchIntentForPackage(appPackage)
+            if (launchIntent != null) {
+                startActivity(launchIntent)
+                val appName = when (appPackage) {
+                    "com.google.android.youtube" -> "YouTube"
+                    "com.whatsapp" -> "WhatsApp"
+                    else -> "Chrome"
+                }
+                val message = if (hindiMode)
+                    "$appName खोल रहा हूँ।"
+                else
+                    "Opening $appName."
+                result.text = message
+                status.text = "JARVIS ONLINE"
+                speak(message)
+                return
+            }
+        }
         val answer = when {
             text.contains("hello") ||
             text.contains("नमस्ते") ||
