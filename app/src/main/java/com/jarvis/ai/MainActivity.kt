@@ -249,12 +249,13 @@ class MainActivity : Activity(),
                 else "I am Jarvis, your personal assistant."
 
             text.contains("time") ||
-            text.contains("समय") ->
-                "The time is " +
-                    SimpleDateFormat(
-                        "hh:mm a",
-                        Locale.getDefault()
-                    ).format(Date())
+text.contains("समय") ||
+text.contains("टाइम") ->
+                (if (hindiMode) "अभी समय है " else "The time is ") +
+    SimpleDateFormat(
+        "hh:mm a",
+        Locale.getDefault()
+    ).format(Date())
 
             text.contains("date") ||
             text.contains("तारीख") ->
